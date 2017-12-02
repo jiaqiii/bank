@@ -1,0 +1,39 @@
+do
+{
+    printf("\n");
+    printf("Please enter username\n");
+    scanf("%s",name);
+    printf("\n");
+    printf("Please enter password\n");
+    scanf("%s", pw);
+    login = login(name,pw);
+    if(login==1)
+    {
+        if(strcmp(name, "admin") == 0))
+        {
+            c = 1;
+        }
+        else
+        {
+            c = 2;
+        }
+    }
+    else if(login == 2)
+    {
+        c = 3;
+    }
+    else 
+    {
+        c = 4;
+    }
+}while(c != 1 && c != 2);
+
+if(c==1)
+{
+}
+
+
+if(c == 2)
+
+   
+    
