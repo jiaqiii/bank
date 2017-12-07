@@ -1,3 +1,4 @@
+#include<openssl/sha.h>
 /*******************************************************************************
  *
  * Name: Jiaqi Li
@@ -13,7 +14,7 @@
 struct record
 {
     char salt[6];
-    unsigned char hash[33];
+    unsigned char hash[SHA256_DIGEST_LENGTH];
     char name[25];
     char type[10];
     float value;

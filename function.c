@@ -22,7 +22,7 @@
 ******************************************************************************/
 int addRecord(struct record** start, char name[], char pw[], char type[], float value)
 {
-    char salt[5];
+    char salt[6];
     int i = 0;
     time_t t;
     int rvalue = 0;
@@ -33,8 +33,9 @@ int addRecord(struct record** start, char name[], char pw[], char type[], float 
     srand((unsigned) time(&t));
     for(;i<5; i++)
     {
-        salt[i] = (rand() %50)+1;
+        salt[i] = (rand() %20)+40;
     }
+    salt[i] = '\0';
     strcat(pw, salt);
     SHA256((const unsigned char*)pw, strlen(pw), hash);
     for(int i = 0; i < SHA256_DIGEST_LENGTH; i++)
@@ -335,6 +336,7 @@ int deleteRecord(struct record** start, char name[])
 ******************************************************************************/
 int login(struct record* start, char name[], char pw[])
 {
+    int c;
     int rvalue = 0;
     time_t t;
     unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -358,16 +360,24 @@ for(int i = 0; i < 32; i++) printf("%02X ",hash[i]);
 printf("\n");
 for(int i = 0; i < 32; i++) printf("%02X ",(unsigned char*)temp->hash[i]);
 printf("\n");
-            if(strcmp((char*)(temp -> hash), (char*)hash) == 0)
+
+            for(c = 0; c < SHA256_DIGEST_LENGTH ; c++)
             {
-                rvalue = 0;
-                check = 1;
+                if(temp->hash[c] != hash[c])
+                { 
+                    check = (check + 1);
+                }
+            }
+            if(check != 0)
+            {
+                rvalue = 2;
             }
             else
             {
-		rvalue =1;
-		check = 1;
+                rvalue = 1;
             }
+            check = 1;
+                
 printf("%d",rvalue);
         }
         else
@@ -377,18 +387,7 @@ printf("%d",rvalue);
     }
     if(check == 0)
     {
-        rvalue = 0;
-    }
-    else
-    {
-        if(rvalue == 0)
-        {
-            rvalue = 1;
-        }
-        else
-        {
-            rvalue = 2;
-        }
+	rvalue = 0;
     }
     return rvalue;
 }  
@@ -420,11 +419,11 @@ int transfer(struct record* start, char name[], char client[], float value)
     {
         if(strcmp((user->name), name) == 0)
         {
-            check = 1;
             if( (user->value) >= value )
             {
                 money = 1;
             }
+            check = 1;
         }
         else
         {

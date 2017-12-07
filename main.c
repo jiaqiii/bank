@@ -10,6 +10,7 @@ void getvalue(float*);
 
 int main(int argc, char *argv[])
 {
+    char client[20];
     int loginresult;
     int c;
     char pw[20];
@@ -253,7 +254,8 @@ printf("%s", name);
 	    printf("1.Modify account balance.\n");
 	    printf("2.Modify account currency type.\n");
 	    printf("3.Print account information.\n");
-	    printf("4.Quit the program.\n");
+	    printf("4.Transfer.\n");
+	    printf("5.Quit the program.\n");
 
 	    printf("\nPlease enter the starting number of the option you would like to choose:\n");
 
@@ -290,8 +292,29 @@ printf("%s", name);
 		    printRecord(start, name);
 		    result = 0;
 		    break;
+             
+                case(4) :
+			printf("please enter username of the recipient\n");
+			scanf("%s", client);
+			fgets(clear,30,stdin);
+		    printf("please enter amount to be transfer\n");
+		    getvalue(&value);
+                    if( transfer(start, name, client, value) == 0)
+                    {
+                         printf("Client account not found");
+                    }
+                    else if( transfer(start, name, client, value) == 1)
+                    {
+                         printf("Not enought blance");
+                    }
+                    else
+                    {
+                         printf("Successfully transfered!");
+                    }
+                    result = 0;
+                    break;  
 	    }
-	}while(result <1 || result>4);
+	}while(result <1 || result>5);
     }
 
 writefile(start,"file.txt","hash.bin");
